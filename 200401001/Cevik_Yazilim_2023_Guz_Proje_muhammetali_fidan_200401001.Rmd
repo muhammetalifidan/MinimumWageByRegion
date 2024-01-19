@@ -45,3 +45,238 @@ Proje kapsamında, aşağıdaki faaliyetler gerçekleştirilecektir:
     belirlenecektir.
 
 <br>
+
+# Q3: Veri Seti Keşifsel Analizi
+
+```{r Definitions, echo=FALSE, message=FALSE, warning=FALSE}
+
+#Gerekli kütüphaneleri dahil ettik
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+
+#Veri setimizi rawData değişkenine atadık
+filename <- "cost-of-living_v2.csv"
+rawData <- readr::read_csv(filename)
+
+#Veri setini analiz etmek
+numberOfRow <- nrow(rawData)
+numberOfRowFilteredData <- rawData %>% filter(country == "Turkey") %>% nrow()
+numberOfCostData <- rawData %>% select(starts_with("x")) %>% ncol()
+
+previewData <- rawData
+filteredPreviewData <- rawData %>% filter(country == "Turkey")
+```
+
+Veri seti [Kaggle](https://www.kaggle.com/) web sitesinden
+indirilmiştir. Veri setini incelediğimizde veri setinin asıl kaynağının
+[Numbeo](https://www.numbeo.com/cost-of-living/) kuruluşu olduğunu
+görüyoruz. Numbeo, 2009 yılından günümüze 10 binden fazla şehir için 9
+milyondan fazla maliyet verisi toplamış ve hala toplamaya devam eden bir
+oluşumdur. Asgari ücret belirleme komisyonu bir sonraki senenin asgari
+ücretini belirleyeceği için veri seti 2023 yılının verilerini
+içeririyor. Veri setini işlemeden önce şehirlerin yaşam maliyetleri öz
+görselini inceleyelim:
+
+<br>
+
+`r previewData`
+
+<br>
+
+Veri seti, **readr::read_csv()** fonksiyonu kullanılarak
+**`r class(rawData)[[1]]`** tipinde bir değişkene ithal edilmiştir. Veri
+setinin istatistikleri aşağıdaki gibidir:
+
+-   Toplam satır sayısı: `r numberOfRow` adettir.
+
+-   Türkiye ile ilgili veri satır sayısı: `r numberOfRowFilteredData`
+    adettir.
+
+-   Yaşam maliyetini analiz edebileceğimiz veri sütun sayısı:
+    `r numberOfCostData` adettir.
+
+-   Sütunlarda bulunan maliyet parametrelerinin geldikleri mana
+    aşağıdaki gibidir:
+
+    | Sütun        | Açıklama                                                                           |
+    |---------------------|---------------------------------------------------|
+    | city         | Şehir adı                                                                          |
+    | country      | Ülke adı                                                                           |
+    | x1           | Yemek, Pahalı Olmayan Restoran (USD)                                               |
+    | x2           | İki Kişilik Yemek, Orta Seviye Restoran, Üç Aşamalı (USD)                          |
+    | x3           | McDonalds'ta McYiyecek (veya eşdeğer menü yiyecek) (USD)                           |
+    | x4           | Yerli Bira (0.5 litre) (USD)                                                       |
+    | x5           | İthal Bira (0.33 litre) (USD)                                                      |
+    | x6           | Cappuccino (sıradan, restoranlarda) (USD)                                          |
+    | x7           | Pepsi (0.33 litre şişede, restoranlarda) (USD)                                     |
+    | x8           | Su (0.33 litre şişede, restoranlarda) (USD)                                        |
+    | x9           | Süt (1 litre, sıradan) (USD)                                                       |
+    | x10          | Taze Somun Beyaz Ekmek (500 gram) (USD)                                            |
+    | x11          | Beyaz Pirinç (1 kilogram) (USD)                                                    |
+    | x12          | Yumurta (sıradan, 12 adet) (USD)                                                   |
+    | x13          | Yerel Peynir (1 kilogram) (USD)                                                    |
+    | x14          | Tavuk Fileto (1 kilogram) (USD)                                                    |
+    | x15          | Dana Eti (1 kilogram) (USD)                                                        |
+    | x16          | Elma (1 kilogram) (USD)                                                            |
+    | x17          | Muz (1 kilogram) (USD)                                                             |
+    | x18          | Portakal (1 kilogram) (USD)                                                        |
+    | x19          | Domates (1 kilogram) (USD)                                                         |
+    | x20          | Patates (1 kilogram) (USD)                                                         |
+    | x21          | Soğan (1 kilogram) (USD)                                                           |
+    | x22          | Marul (1 baş) (USD)                                                                |
+    | x23          | Su (1.5 litre, şişede, markette) (USD)                                             |
+    | x24          | Şişede Şarap (orta seviye, markette) (USD)                                         |
+    | x25          | Yerel Bira (0.5 litre şişe, markette) (USD)                                        |
+    | x26          | İthal Bira (0.33 litre şişe, markette) (USD)                                       |
+    | x27          | Sigara Paketi (20 adet, Marlboro) (USD)                                            |
+    | x28          | Tek Yön Bilet (yerel ulaşım) (USD)                                                 |
+    | x29          | Aylık Geçiş (normal fiyat) (USD)                                                   |
+    | x30          | Taksi Açılış Ücreti (normal tarife) (USD)                                          |
+    | x31          | Taksi 1 Kilometre Ücreti (normal tarife) (USD)                                     |
+    | x32          | Taksi 1 Saat Bekleme (normal tarife) (USD)                                         |
+    | x33          | Benzin (1 litre) (USD)                                                             |
+    | x34          | Volkswagen Golf 1.4 90 KW Trendline (veya eşdeğerinde yeni arada) (USD)            |
+    | x35          | Toyota Corolla Sedan 1.6I 97kW Comfort (veya değerinde yeni araba) (USD)           |
+    | x36          | Temel Faturalar (elektrik, ısıtma, soğutma, su, çöp) 85 metrekare Apartmanda (USD) |
+    | x37          | 1 Dakika Konuşma Tarifesi (USD)                                                    |
+    | x38          | İnternet (60 Mbps veya daha fazlası, limitsiz, kablolu/ADSL) (USD)                 |
+    | x39          | Spor Salonu Aylık Ücreti (yetişkin) (USD)                                          |
+    | x40          | Tenis Kortu Kiralama (hafta sonu 1 saat) (USD)                                     |
+    | x41          | Sinema (uluslararası gösterim, 1 koltuk) (USD)                                     |
+    | x42          | Aylık Anaokulu Ücreti (tüm gün, özel, 1 çocuk) (USD)                               |
+    | x43          | Senelik Uluslararası İlkokul Ücreti (1 child) (USD)                                |
+    | x44          | Pantolon (1 adet, Levis 501 veya benzer) (USD)                                     |
+    | x45          | Yazlık Elbise Zincir Mağazada (1 adet, H&M veya benzer) (USD)                      |
+    | x46          | Nike Koşu Ayakkabası (1 çift, orta seviye) (USD)                                   |
+    | x47          | Deri İş Ayakkabası (1 çift) (USD)                                                  |
+    | x48          | Apartman Dairesi (1 yatak odalı, şehir merkezinde) (USD)                           |
+    | x49          | Apartman Dairesi (1 yatak odalı, şehir merkezi dışında) (USD)                      |
+    | x50          | Apartman Dairesi (3 yatak odalı, şehir merkezinde) (USD)                           |
+    | x51          | Apartman Dairesi (3 yatak odalı, şehir merkezi dışında) (USD)                      |
+    | x52          | Metrekare Başına Apartman Dairesi Satın Almak (şehir merkezinde) (USD)             |
+    | x53          | Metrekare Başına Apartman Dairesi Satın Almak (şehir merkezi dışında) (USD)        |
+    | x54          | Aylık Ortalama Net Maaş (vergilerden sonra) (USD)                                  |
+    | x55          | Konut Faiz Oranı (yıllık, yüzde olarak, sabit faizli)                              |
+    | data_quality | İçerisinde NaN değer bulunmayanlar 1, bulunanlar 0 değeri alır                     |
+
+<hr>
+
+Maliyet parametreleri uzun parametrelere karşılık geldiğinden veri
+setinde **xY** formatında tutulmuştur. **city** ve **country** sütunları
+**character**, diğer sütunlar ise **numeric** veri tipine sahiptir. Veri
+seti çok fazla sütun içerse de karmaşıklıktan uzak bir veri setidir. Bu
+yüzden veri setinde geliştirilmesi gereken yerlere odaklanalım.
+
+<br>
+
+`r filteredPreviewData`
+
+<br>
+
+1.  Veri setinde farklı ülkelerden 10 binden fazla şehir vardır. İlk
+    yapılması gereken yukarıdaki gibi yalnızca Türkiye'nin şehirlerini
+    barındıran bir veri seti oluşturmaktır. Bunun için veri setini
+    filtreleyeceğiz.
+
+2.  Veri setinde Türkiye ile alakalı toplam `r numberOfRowFilteredData`
+    satır (kayıt) vardır. Türkiye'de 81 il olduğundan öncelikle buradaki
+    eksiği gidermek için Numbeo sitesinden eksik kalan şehirleri
+    tamamlayacağız.
+
+3.  Veri setini hazırlayan şirket, ana dili İngilizce olan bir ülkede
+    varlığını sürdürdüğünden şehirlerimizin adında bulunan Türkçe
+    karakterler doğru yazılmamıştır. Türkçe karakterler ile
+    şehirlerimizin adını doğru bir şekilde yazacağız.
+
+4.  Şehirleri alfabetik olarak sıralayacağız. Bu sayede veri setini
+    analiz ederken bir şehri daha kolay bulabileceğiz ve aynı zamanda
+    gözümüze daha düzenli gelecektir.
+
+5.  Veri seti asgari ücret tespiti için birçok bilgi içeriyor. Bir
+    şehrin `r numberOfCostData` sütunundaki tüm maliyetleri girilmiş ise
+    son satırda bulunan **data_quality** sütununa **1** değeri
+    girilmiştir. Bir veri bile eksikse **0** değeri girilmiştir.
+    Maliyetlerin girilmediği sütunlara da **NaN** değeri atanmıştır. Bu
+    verileri yine Numbeo sitesini baz alarak güncelleyeceğiz. Aşağıda
+    veri kalitesi grafiğini görebilirsiniz.
+
+    <br>
+
+    ```{r DataQuality, echo=FALSE, message=FALSE, warning=FALSE}
+    data_quality <- rawData %>% filter(country == "Turkey") %>% select(data_quality)
+
+    # 0'ların yüzdelik oranı
+    zero <- sum(data_quality == 0) / length(data_quality$data_quality) * 100
+
+    # 1'lerin yüzdelik oranı
+    one <- sum(data_quality == 1) / length(data_quality$data_quality) * 100
+
+    # 0 ve 1'lere göre grafik
+    ggplot(data = data_quality, aes(x = data_quality)) +
+      geom_bar(stat = "count", width = 0.5, fill = "red", alpha = 0.5) +
+      scale_x_continuous(breaks = c(0, 1), labels = c("0", "1")) +
+      xlab("Veri Kalitesi") +
+      ylab("Adet") +
+      labs(title = "Türkiye Şehirlerinin Veri Kalitesi Sayıları")
+    ```
+
+    <br>\
+    Yukarıdaki grafiğe bakarak Türkiye'deki şehirlerin maliyet
+    verilerinin yaklaşık `r round(one, 2)` oranında kaliteli olduğu
+    görülüyor. Fakat bu oran sizi yanılgıya düşürmesin çünkü
+    `r round(zero, 2)` oranında kullanılamaz veri yok. Eğer
+    `r numberOfCostData` maliyetten bir tanesi bile eksikse onu kaliteli
+    veri saymadığı için bu oran çıkıyor. Bunu daha iyi analiz edebilmek
+    için Türkiye'deki tüm şehirlerin, tüm maliyet verilerinin dolululuk
+    oranına bakalım:\
+
+    ```{r DataQuality2, echo=FALSE, message=FALSE, warning=FALSE}
+    filteredByTurkey <- rawData %>% filter(country == "Turkey")
+    costColumns <- filteredByTurkey %>% select(starts_with("x"))
+
+    notNanList <- lapply(costColumns, function(x) sum(!is.nan(x), na.rm = TRUE))
+    nanList <- lapply(costColumns, function(x) sum(is.nan(x)))
+
+    # NaN olmayan değerlerin sayısı toplamı
+    totalNotNan <- sum(unlist(notNanList))
+
+    # NaN olan değerlerin sayısı toplamı
+    totalNan <- sum(unlist(nanList))
+
+    # Pasta grafiğini oluştur
+    pie(c(totalNotNan, totalNan), labels = c("Olan Veriler", "Olmayan Veriler (NaN)"), col = c("lightblue", "lightgray"),
+        main = "Dolu Maliyet Verileri", cex.main = 1.2)
+    ```
+
+    Bu durum aslında veri setimizin gayet iyi durumda olduğunu ve çok az
+    veri ithal edeceğimizi gösteriyor.
+
+6.  Veri setinin baz aldığı asıl şehir New York olduğundan maliyet
+    fiyatları Amerikan Doları (\$) para birimi ile yazılmış. Biz ise
+    yalnızca Türkiye'deki şehirleri kullanacağımız için 2023 Aralık ayı
+    Amerikan Doları - Türk Lirası paritesini kullanacağız.
+
+7.  Veri setinde bulunan ve insanın refah yaşam standartlarını
+    arttırmayan içki, sigara ve türevleri parametreleri asgari ücret
+    tespit kapsamına almayacağız. Bununla birlikte tenis kortu gibi
+    Türkiye'deki her şehirde olmayan parametleri de çıkaracağız. Dileyen
+    kişiler asgari ücreti hesaplandıktan sonra ev, araba gibi kişiyi
+    mülk sahibi yapabilecek şeyler için vereceğimiz refah payını
+    dilediği gibi kullanabilirler.
+
+<br>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(testthat)
+
+# Test dosyasını çalıştır ve çıktıları yakala
+test_output <- capture.output(test_file("Q3_tests_muhammetali_fidan_200401001.R"))
+```
+
+
+
+
+
