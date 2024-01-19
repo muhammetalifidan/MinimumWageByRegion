@@ -412,6 +412,198 @@ test_output <- capture.output(test_file("Q4_tests_muhammetali_fidan_200401001.R"
 
 ```
 
+# Q5: Veri Mühendisliği
+
+Veri setinin analizini yaşam maliyetlerini göz önüne alarak yapacağız.
+Bunun için veri setini kategorilere böleceğiz. Aşağıda ise asgari
+ücretli ile çalışan bir bireyin bir ay içerisinde karşılacağı
+maliyetleri, veri setindeki sütunlara göre kategorize ettiğimizde
+verimizi 6 kategori altında değerlendireceğiz.
+
+1.  **Temel Yaşam Maliyetleri:**
+
+    -   x1'den x23'e kadar olan gıda ve temel tüketim maddeleri
+        fiyatları.
+
+2.  **Ulaşım Maliyetleri:**
+
+    -   x28'den x32'ye kadar olan taksi ve ulaşım ücretleri.
+
+3.  **Konut ve Fatura Maliyetleri:**
+
+    -   x36'daki temel faturalar (elektrik, ısıtma, soğutma, su, çöp).
+    -   x37 ve x38 iletişim ücretleri.
+    -   x48'den x51'e kadar olan apartman daireleri kira fiyatları.
+
+4.  **Eğlence ve Spor Maliyetleri:**
+
+    -   x39'daki spor salonu ücreti.
+    -   x41'deki sinema biletleri fiyatı.
+
+5.  **Giyim ve Ayakkabı Maliyetleri:**
+
+    -   x44'den 47'ye kadar giyim fiyatları.
+
+6.  **Mülk Edinme Maliyetleri:**
+
+    -   x52 ve x53'teki apartman dairesi satın alma metrekare fiyatı
+
+<hr>
+
+#### **Sağlıklı Bir İnsanın 1 Aylık Gıda Tüketimi**
+
+| **Ürün**                  | **Günlük Tüketim**    | **Aylık Tüketim**         |
+|:-------------------|:-------------------------|:-------------------------|
+| **Restoranda Yemek (x1)** | \-                    | 4 kez                     |
+| **Cappuccino (x6)**       | \-                    | 4 kez                     |
+| **Süt (x9)**              | 2 su bardağı (500 ml) | 30 su bardağı (7,5 litre) |
+| **Ekmek (x10)**           | 5 dilim (250 gram)    | 140 dilim (7 kilogram)    |
+| **Pirinç (x11)**          | 150 gram              | 2,25 kilogram             |
+| **Yumurta x(12)**         | 2 adet                | 42 adet                   |
+| **Peynir (x13)**          | 50 gram               | 750 gram                  |
+| **Tavuk eti (x14)**       | 200 gram              | 4,2 kilogram              |
+| **Dana eti (x15)**        | 200 gram              | 4,2 kilogram              |
+| **Meyve (x16-17-18)**     | 200 gram              | 4,2 kilogram              |
+| **Sebze (x19-20-21-22)**  | 200 gram              | 4,2 kilogram              |
+| **Su (x23)**              | 2 litre               | 42 litre                  |
+
+<br>
+
+#### **Araçlı/Araçsız Bir İnsanın 1 Aylık Taşıma Ücretleri**
+
+| **Ürün**                       | **Günlük Tüketim** | **Aylık Tüketim** |
+|:-------------------------------|:-------------------|:------------------|
+| **Yerel Ulaşım Tek Yön (x28)** | 2 kez              | 60 kez            |
+
+<br>
+
+#### **Ortalama Bir İnsanın 1 Aylık Fatura ve Konut Gideri**
+
+| **Ürün**                                        | **Aylık Tüketim** |
+|:------------------------------------------------|:------------------|
+| **Elektrik, Isıtma... (x36)**                   | Tek Fiyat         |
+| **1 Dakika Konuşma (x37)**                      | 500 dakika        |
+| **İnternet (x38)**                              | Tek Fiyat         |
+| **Apartman Dairesi Kira Fiyatı (x48-49-50-51)** | Tek Fiyat         |
+
+<br>
+
+#### **Ortalama Bir İnsanın 1 Aylık Eğlence ve Spor Gideri**
+
+| **Ürün**                  | **Aylık Tüketim** |
+|:--------------------------|:------------------|
+| **Spor Salonu (x39)**     | Tek Fiyat         |
+| **Sinema Gösterim (x41)** | 2 kez             |
+
+<br>
+
+#### **Ortalama Bir İnsanın 1 Aylık Giyim Tüketimi**
+
+| **Ürün**              | **Aylık Tüketim** |
+|:----------------------|:------------------|
+| **Pantolon (x44)**    | 1 adet            |
+| **Elbise (x45)**      | 1 adet            |
+| **Ayakkabı (x46-47)** | 1 adet            |
+
+<br>
+
+#### **Ortalama Bir İnsanın Mülk Sahibi Olma Maliyeti**
+
+| **Ürün**                                  | **Tüketim**             |
+|:------------------------------------------|:------------------------|
+| **Apartman Dairesi Satın Almak (x52-53)** | 80 metrekare (20 yılda) |
+
+Yapacağımız analizi daha iyi anlamak için bir örnek vermek gerekirse
+İstanbul'da yaşayan bir kimsenin ortalama gıda tüketim maliyeti ile
+diğer illerin ortalama gıda tüketim maliyetinin karşılaştırılmasını
+aşağıdaki grafikte görebilirsiniz.
+
+<br>
+
+```{r DataEngineering, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Istanbul ile diğer şehirlerin x1, x2, x6, ..., x28 sütunlarının ortalamalarını hesapla
+istanbul_totals <- filteredDatas %>%
+  filter(city == "İstanbul") %>%
+  select(x1, x6, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23) %>%
+  summarise_all(mean)
+
+other_totals <- filteredDatas %>%
+  filter(city != "İstanbul") %>%
+  select(x1, x6, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23) %>%
+  summarise_all(mean)
+
+# Istanbul ve diğer şehirlerin ortalamalarını içeren bir veri çerçevesi oluştur
+avg_df <- bind_rows(
+  data.frame(city = "Istanbul", istanbul_totals),
+  data.frame(city = "Other Cities", other_totals)
+)
+
+# Veri çerçevesini düzenle (reshape)
+avg_df_long <- pivot_longer(avg_df, cols = -city, names_to = "variable", values_to = "value")
+
+# Sütunları uygun sıraya getir
+avg_df_long$variable <- factor(avg_df_long$variable, levels = colnames(istanbul_totals))
+
+# Grafik oluştur
+ggplot(avg_df_long, aes(x = variable, y = value, fill = city)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  labs(title = "İstanbul ile Diğer Şehirlerin Temel Yaşam Maliyeti Ortalamaları",
+       x = "Değişkenler", y = "Ortalama Değer") +
+  scale_fill_manual(values = c("red", "blue")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+<br>
+
+Verimizi artık analize hazır hale getirmek için yukarıdaki
+oluşturduğumuz tabloya göre bir kişinin tüketim miktarı ile tüketeceği
+ürünlerin maliyetlerini hesaplayalım.
+
+```{r DataEngineering2, echo=FALSE, message=FALSE, warning=FALSE}
+
+costOfLiving <- filteredDatas %>%
+  mutate(
+    city = city,
+    x1 = x1 * 4,
+    x6 = x6 * 4,
+    x9 = x9 * 7.5,
+    x10 = x10 * 14,
+    x11 = x11 * 2.25,
+    x12 = x12 * 6,
+    x13 = x13 * 0.75,
+    x14 = x14 * 4.2,
+    x15 = x15 * 4.2,
+    x16_17_18 = (x16 + x17 + x18) * 4.2,
+    x19_20_21_22 = (x19 + x20 + x21 + x22) * 4.2,
+    x23 = x23 * 28,
+    x28 = x28 * 60,
+    x36 = x36,
+    x37 = x37 * 500,
+    x38 = x38,
+    x39 = x39,
+    x41 = x41 * 2,
+    x44 = x44,
+    x45 = x45,
+    x46_47 = (x46 + x47) / 2,
+    x48_49_x50_x51 = (x48 + x49 + x50 + x51) / 4,
+    x52_53 = (x52 + x53) * 80 / 240
+  ) %>%
+  select(city, x1, x6, x9, x10, x11, x12, x13, x14, x15, x16_17_18, x19_20_21_22, x23, x28, x36, x37, x38, x39, x41, x44, x45, x46_47, x48_49_x50_x51, x52_53)
+```
+
+<br>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(testthat)
+
+# Test dosyasını çalıştır ve çıktıları yakala
+test_output <- capture.output(test_file("Q5_tests_muhammetali_fidan_200401001.R"))
+
+```
+
 
 
 
