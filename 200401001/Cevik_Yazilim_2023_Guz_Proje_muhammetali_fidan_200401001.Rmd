@@ -668,5 +668,53 @@ test_output <- capture.output(test_file("Q6_tests_muhammetali_fidan_200401001.R"
 
 ```
 
+# Q7 : Sonuç, değerlendirme, tavsiyeler
 
+## Analiz Sonuçları
+
+Analizlerimizi tamamladık ve farklı şehirlerdeki yaşam maliyetlerine
+göre belirlenen asgari ücretleri değerlendirdik. Görüldüğü üzere
+ülkemizde 2024 yılı için belirlenen asgari ücret, bir insanın sağlıklı
+beslenebilmesi, yeni giysiler giymesi 20 yıllık vadede bir ev sahibi
+olabilmesi için çok düşük kalıyor.
+
+### 1. Şehir Karşılaştırmaları
+
+Farklı şehirlerdeki yaşam maliyetlerini karşılaştırdık ve özellikle
+büyük şehirlerdeki yaşam maliyetleri diğer şehirlerin çok üstünde
+kalıyor. Eğer önlem alınmaz ise yakın zamanda büyük şehirlerde kaçak
+işçi çalıştırma vakaları veya işçi bulamama durumları artacak.
+
+### 2. Asgari Ücret Belirleme Yöntemleri
+
+Asgari ücret belirleme yöntemlerini değerlendirdik:
+
+-   Bir kişinin sağlıklı beslenmesi, yeni kıyafetler alabilmesi, sinema
+    ve spor salonuna gitmek gibi insani durumlar asgari ücreti
+    belirlemenin ana noktası olmuştur.
+-   Bunun yanı sıra yıllarca çalışan ve gün geçtikte hem fiziksel hem de
+    manevi olarak yorulan bireylerin bir eve sahip olmaları ve
+    yaşlılıklarında kira vermek için ek işe ihtiyaç duymamaları için 20
+    yılda konut alabilecek katkı payını da asgari ücretin üzerine
+    ekledik.
+
+## Tavsiyeler
+
+Analizlerimizden elde ettiğimiz bulgular doğrultusunda şu tavsiyelerde
+bulunuyoruz:
+
+Her ne kadar farklı şehirlere farklı asgari ücret belirlemek iyi bir
+çözüm gibi gözükse de uzun vadede insanlar daha yüksek asgari ücret
+almak için büyük şehirlere göçecektir. Bunun en büyük çözümü
+bakanlıkların şehir planlamaları yapmasıdır. Sanayileri, tarım
+alanlarını, hayvancılığı farklı şehirlere homojen dağıtmaya çalışarak
+asgari ücret farkı uzun vadede kaybolabilir.
+
+## Sonuç
+
+Bu analiz, farklı şehirlerdeki yaşam maliyetlerine göre asgari ücret
+belirleme konusunda kapsamlı bir değerlendirme sunmaktadır.
+Tavsiyelerimizi dikkate alarak, adil ve sürdürülebilir bir asgari ücret
+politikası oluşturulması önemlidir. Veri analizimizin faydalı olmasını
+umuyorum.
 
