@@ -1,0 +1,20 @@
+---
+title: 'Proje Rapor : Muhammet Ali Fidan 200401001'
+output:
+  html_document:
+    df_print: paged
+---
+
+<br>
+
+# Q1: Problem Tanımı:
+
+Çalışma ve Sosyal Güvenlik Bakanlığı Asgari Ücret Tespit Komisyonu
+olarak Türkiye'de şehirlere göre farklı yaşam maliyetlerine rağmen, tüm
+şehirlerde tek asgari ücret politikası uygulamasını değiştirmeye karar
+verdik. Tek asgari ücret politikası büyük şehirlerde yaşayan işçiler ile
+küçük şehirlerde yaşayan işçiler arasında gelir ve gider dengesizliği
+oluşturuyor.
+
+<br>
+
