@@ -604,6 +604,69 @@ test_output <- capture.output(test_file("Q5_tests_muhammetali_fidan_200401001.R"
 
 ```
 
+# Q6 : Veri analizi
+
+```{r DataProcessing, echo=FALSE, message=FALSE, warning=FALSE}
+costOfLiving <- costOfLiving %>%
+  mutate(
+    cost_of_living = rowSums(costOfLiving[, -1])
+  )
+
+costOfLiving
+```
+
+<br>
+
+Bütün sütunları inceledik, işledik ve analiz ettik. Bunun sonucunda
+ulaştığımız asgari ücret değerlerini veri setimizin sonuna
+**cost_of_living** sütuna atadık.
+
+Sadece şehir ve asgari ücret sütunlarından oluşan bir tablo oluşturalım:
+
+```{r DataProcessing2, echo=FALSE, message=FALSE, warning=FALSE}
+
+costOfLivingWithCity <- costOfLiving %>% 
+  select(city, cost_of_living)
+
+costOfLivingWithCity
+```
+
+<br>
+
+Veri analizini bir grafik üzerinden okuyalım:
+
+```{r DataProcessing3, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Şehir adedini al
+city_count <- nrow(costOfLivingWithCity)
+
+# Sırasıyla 1'den başlayarak city_count kadar sayı oluştur
+city_indices <- seq(1, city_count)
+
+# Veri çerçevesine yeni bir sütun (city_indices) ekleyerek güncelle
+costOfLivingWithCity$city_indices <- city_indices
+
+# Grafik çiziminde kullanmak üzere x değerlerini güncelle
+ggplot(costOfLivingWithCity, aes(x = city_indices, y = cost_of_living)) +
+  geom_col() +
+  ggtitle("Yaşam Maliyeti - Şehirler") +
+  xlab("Şehir") + ylab("Yaşam Maliyeti (TRY)")
+```
+
+<br>
+
+Görüldüğü üzere aslında Türkiye'nin birçok ilinin yaşam maliyetleri birbirine yakın iken özellikle bazı büyük şehirlerde maliyetler çok daha fazla artıyor. Bu da orada yaşayan işçileri yaşanılmaz bir hayat sunuyor. Her şehrin asgari ücretini yaşam maliyetine göre belirlemek ise eşit değil adaletli bir yaşam kapısı sunuyor.
+
+<br>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(testthat)
+
+# Test dosyasını çalıştır ve çıktıları yakala
+test_output <- capture.output(test_file("Q6_tests_muhammetali_fidan_200401001.R"))
+
+```
 
 
 
