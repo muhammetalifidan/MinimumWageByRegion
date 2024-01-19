@@ -18,3 +18,30 @@ oluşturuyor.
 
 <br>
 
+# Q2: Proje Amacı:
+
+Türkiye'de şehirlere göre farklı yaşam maliyetleri olmasına rağmen, tek
+bir asgari ücret belirlenmesi nedeniyle, büyük şehirlerde yaşayan
+işçiler, küçük şehirlerde yaşayan işçilere göre daha düşük bir gelire
+sahip olmaktadır. Bu durum, işçilerin yaşam standardını düşürmekte ve
+refah düzeyini olumsuz etkilemektedir.
+
+Bu projenin amacı, Türkiye'deki 81 ilin farklı yaşam maliyetlerini
+dikkate alarak, şehirlere göre asgari ücret belirleme sistemi
+tasarlamaktır. Bu sistem, şehirlerin yaşam maliyetlerini dikkate alarak,
+işçilerin adil bir gelir elde etmelerini sağlayacaktır.
+
+Proje kapsamında, aşağıdaki faaliyetler gerçekleştirilecektir:
+
+-   Şehirlerdeki yaşam maliyetlerini belirleyebilmek için [Global Cost
+    Of
+    Living](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)
+    adlı veri setinin Türkiye ile ilgili verileri analiz edilecektir.
+
+-   Şehirlerin yaşam maliyetlerini belirlemek için çeşitli yöntemler
+    geliştirilecektir.
+
+-   Geliştirilen yöntemler kullanılarak, şehirlere göre asgari ücretler
+    belirlenecektir.
+
+<br>
